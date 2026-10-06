@@ -1,0 +1,229 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+body {
+    text-align: center;
+    background: url('https://cdn.photoroom.com/v2/image-cache?path=gs://background-7ef44.appspot.com/backgrounds_v3/black/08_-_black.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: white;
+    overflow: hidden;
+}
+.loading-screen {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: red;
+    z-index: 9999;
+}
+.container {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 10px;
+    display: none;
+}
+.search-bar {
+    width: 80%;
+    padding: 10px;
+    margin: 15px auto;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    display: block;
+    text-align: center;
+}
+.game-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    padding: 10px;
+}
+.game {
+    background: #222;
+    padding: 10px;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+.game:hover {
+    background: red;
+}
+.game img {
+    width: 100%;
+    border-radius: 5px;
+}
+.game a {
+    text-decoration: none;
+    color: white;
+    display: block;
+    margin-top: 5px;
+}
+.credits {
+    margin-top: 20px;
+    font-size: 14px;
+    opacity: 0.7;
+}
+.admin-panel {
+    margin-top: 20px;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 15px;
+    border-radius: 10px;
+}
+button {
+    margin-top: 10px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background: red;
+    color: white;
+    cursor: pointer;
+}
+button:hover {
+    background: darkred;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Graveyard - Play the Best Games Online">
+    <title>Graveyard Hub</title>
+    <link rel="stylesheet" href="ADMIN.css">
+</head>
+<body>
+
+    <!-- Loading screen -->
+    <div class="loading-screen" id="loadingScreen">🚀 Loading graveyard Hub... made from tixu</div>
+
+    <!-- Main content -->
+    <div class="container" id="mainContent">
+        <h1>GraveYards Made By tixu</h1>
+        <p>Play the best games online for free!</p>
+
+        <!-- Search bar -->
+        <input type="text" id="search" class="search-bar" placeholder="🔍 Search for a game..." onkeyup="searchGames()">
+
+        <!-- Popular games -->
+        <h2>🔥 Popular Games</h2>
+        <div class="game-grid" id="gameGrid">
+            <div class="game" data-id="1">
+                <img src="https://www.onlinegames.io/media/posts/364/responsive/Archer-Hero-Online-xs.jpg" alt="Game 1">
+                <a href="https://www.onlinegames.io/games/2023/unity/archer-hero/index.html" onclick="trackClick('Game 1')">🚀 Play Game 1</a>
+            </div>
+            <div class="game" data-id="2">
+                <img src="https://www.onlinegames.io/media/posts/740/responsive/Crazy-Karts-xs.jpg" alt="Game 2">
+                <a href="https://www.onlinegames.io/games/2024/unity/crazy-karts/index.html" onclick="trackClick('Game 2')">⚡ Play Game 2</a>
+            </div>
+            <div class="game" data-id="3">
+                <img src="https://www.onlinegames.io/media/posts/330/responsive/Cat-Simulator-Online-xs.jpg" alt="Game 3">
+                <a href="https://www.onlinegames.io/games/2022/unity4/cat-simulator/index.html" onclick="trackClick('Game 3')">🔥 Play Game 3</a>
+            </div>
+            <div class="game" data-id="4">
+                <img src="https://www.onlinegames.io/media/posts/971/responsive/Cookie-Clicker-Pro-Game-xs.jpg" alt="Game 4">
+                <a href="https://cloud.onlinegames.io/games/2025/unity/cookie-clicker-pro/index-og.html" onclick="trackClick('Game 4')">🎯 Play Game 4</a>
+            </div>
+            <div class="game" data-id="5">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiX-_uMkKQoVPggcWJ6GtHGgtkXZu9FsMzD-8op5nUug&s" alt="Math Cheat">
+                <a href="a1" onclick="trackClick('Math Cheat')">🎯 Math Cheat</a>
+            </div>
+        </div>
+
+        <!-- Credits -->
+        <p class="credits">© 2025 Game Hub | Created by TIXU-RAMP</p>
+
+        <!-- Admin Panel Access -->
+        <button onclick="showAdminPanel()">Admin Panel (Secret)</button>
+    </div>
+
+    <!-- Admin Panel -->
+    <div class="admin-panel" id="adminPanel" style="display: none;">
+        <h2>Admin Panel</h2>
+        <p>Total Visits: <span id="totalVisits">0</span></p>
+        <p>Most Clicked Game: <span id="mostClickedGame">None</span></p>
+        <h3>Logs</h3>
+        <ul id="logs"></ul>
+        <button onclick="resetCounter()">Reset Counter</button>
+        <button onclick="resetLogs()">Reset Logs</button>
+    </div>
+
+    <script src="ADMIN.js"></script>
+</body>
+</html>
+
+let visitCount = localStorage.getItem('visitCount') ? parseInt(localStorage.getItem('visitCount')) : 0;
+let gameClicks = JSON.parse(localStorage.getItem('gameClicks')) || {};
+const logs = JSON.parse(localStorage.getItem('logs')) || [];
+
+// Increment visit count on page load
+visitCount++;
+localStorage.setItem('visitCount', visitCount);
+
+// Track game clicks
+function trackClick(game) {
+    if (!gameClicks[game]) {
+        gameClicks[game] = 0;
+    }
+    gameClicks[game]++;
+    localStorage.setItem('gameClicks', JSON.stringify(gameClicks));
+
+    // Log click
+    logs.push({ game, timestamp: new Date().toISOString() });
+    localStorage.setItem('logs', JSON.stringify(logs));
+}
+
+// Show loading screen for 2 seconds
+setTimeout(() => {
+    document.getElementById('loadingScreen').style.display = 'none';
+    document.getElementById('mainContent').style.display = 'block';
+}, 2000);
+
+// Admin panel access
+function showAdminPanel() {
+    const password = prompt("Enter Admin Password:");
+    if (password === "FUCK SCHOOL") {
+        document.getElementById('adminPanel').style.display = 'block';
+        updateAdminPanel();
+    } else {
+        alert("Incorrect password");
+    }
+}
+
+// Update the Admin Panel with visit stats
+function updateAdminPanel() {
+    document.getElementById('totalVisits').textContent = visitCount;
+    const mostClickedGame = Object.keys(gameClicks).reduce((a, b) => gameClicks[a] > gameClicks[b] ? a : b, '');
+    document.getElementById('mostClickedGame').textContent = mostClickedGame || 'None';
+
+    // Display logs
+    const logsList = document.getElementById('logs');
+    logsList.innerHTML = '';
+    logs.forEach(log => {
+        const listItem = document.createElement('li');
+        listItem.textContent = `${log.game} - ${log.timestamp}`;
+        logsList.appendChild(listItem);
+    });
+}
+
+// Reset counter
+function resetCounter() {
+    localStorage.setItem('visitCount', 0);
+    visitCount = 0;
+    updateAdminPanel();
+}
+
+// Reset logs
+function resetLogs() {
+    localStorage.setItem('logs', JSON.stringify([]));
+    logs.length = 0;
+    updateAdminPanel();
+}
